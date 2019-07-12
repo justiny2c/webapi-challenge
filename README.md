@@ -26,13 +26,24 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 
 - [ ] Mention two parts of Express that you learned about this week.
 
+    Express is a simple a framework that uses Node.js.
+    Express is compatible with connect middleware (haven't use/seen this yet).
+
 - [ ] Describe Middleware?
+
+    Middleware is just a software; it contains functions that get requests and returns a response(s).
 
 - [ ] Describe a Resource?
 
+    A resource (I think) is referring to the API? It provides data.
+
 - [ ] What can the API return to help clients know if a request was successful?
 
+    Status code 200's! Or just the data. 
+
 - [ ] How can we partition our application into sub-applications?
+
+    Separating into different files with server and router.
 
 ## Project Setup
 
