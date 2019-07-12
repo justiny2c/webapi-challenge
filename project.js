@@ -1,10 +1,11 @@
 const express = require('express');
 
 const dbProjects = require("./data/helpers/projectModel");
+const dbActions = require("./data/helpers/actionModel");
 
 const router = express.Router();
 
-router.get("/:id", (req, res) => {
+router.get("/:id", validateProjectId, (req, res) => {
     const id = req.params.id
 
     dbProjects
@@ -20,6 +21,18 @@ router.get("/:id", (req, res) => {
         res.status(500).json(error)
     })
 })
+router.get('/:id/actions', validateProjectId, (req, res) => {
+    const id = req.params.id
+
+    dbProjects
+    .getProjectActions(id)
+    .then(actions => {
+        res.status(200).json(actions)
+    })
+    .catch(error => {
+        res.status(500).json(error)
+    })
+});
 
 router.post("/", (req, res) => {
     const project = req.body
@@ -34,7 +47,20 @@ router.post("/", (req, res) => {
     })
 })
 
-router.put("/:id", (req, res) => {
+router.post("/:id/actions", validateProjectId, (req, res) => {
+    const action = req.body
+
+    dbActions
+    .insert(action)
+    .then(actions => {
+        res.status(201).json(actions)
+    })
+    .catch(error => {
+        res.status(500).json(error)
+    })
+})
+
+router.put("/:id", validateProjectId, (req, res) => {
     const id = req.params.id
     const newProject = req.body
 
@@ -60,5 +86,21 @@ router.delete("/:id", (req, res) => {
         res.status(500).json(error)
     }) 
 })
+
+function validateProjectId(req, res, next) {    
+    dbProjects
+    .get(req.params.id)
+    .then(project => {
+        if(project){
+            next();
+        } else {
+            res.status(400).json({ message: "Project ID does not exist" })
+        }
+        })
+    .catch(error => {
+        res.status(500).json(error)
+    })
+};
+
 
 module.exports = router
