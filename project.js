@@ -27,11 +27,38 @@ router.post("/", (req, res) => {
     dbProjects
     .insert(project)
     .then(project => {
-        res.status(200).json(project)
+        res.status(201).json(project)
     })
     .catch(error => {
         res.status(500).json(error)
     })
+})
+
+router.put("/:id", (req, res) => {
+    const id = req.params.id
+    const newProject = req.body
+
+    dbProjects
+    .update(id, newProject)
+    .then(project => {
+        res.status(202).json(project)
+    })
+    .catch(error => {
+        res.status(500).json(error)
+    })
+})
+
+router.delete("/:id", (req, res) => {
+    const id = req.params.id
+
+    dbProjects
+    .remove(id)
+    .then(() => {
+       res.status(204).end()
+    })
+    .catch(error => {
+        res.status(500).json(error)
+    }) 
 })
 
 module.exports = router
